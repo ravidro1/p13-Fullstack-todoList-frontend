@@ -1,10 +1,10 @@
 import axios from "axios";
-import React, {useEffect, useState} from "react";
-import {useForm} from "react-hook-form";
-import {useParams} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 
 function ToDoList() {
-  const {register, reset, handleSubmit} = useForm();
+  const { register, reset, handleSubmit } = useForm();
 
   const param = useParams();
 
@@ -14,7 +14,7 @@ function ToDoList() {
   useEffect(() => {
     if (!currentUser) {
       axios
-        .post("http://localhost:8000/getUserByUsername", {
+        .post(`${process.env.REACT_APP_BACKEND_URL}/getUserByUsername`, {
           username: param?.username,
         })
         .then((res) => {
@@ -30,7 +30,7 @@ function ToDoList() {
 
   const getUserTaskList = (user) => {
     axios
-      .post("http://localhost:8000/getAllForUser", {
+      .post(`${process.env.REACT_APP_BACKEND_URL}/getAllForUser`, {
         creatorRef: user._id,
       })
       .then((res) => {
@@ -44,13 +44,13 @@ function ToDoList() {
 
   const addItem = (data) => {
     axios
-      .post("http://localhost:8000/addTask/", {
+      .post(`${process.env.REACT_APP_BACKEND_URL}/addTask/`, {
         ...data,
         creatorRef: currentUser,
       })
       .then((res) => {
         console.log(res.data);
-        setAllItem([...allItems, {...res.data.data, editItem: false}]);
+        setAllItem([...allItems, { ...res.data.data, editItem: false }]);
       })
       .catch((err) => {
         console.log(err);
@@ -59,10 +59,12 @@ function ToDoList() {
   };
 
   const deleteItem = (id) => {
-    axios.post("http://localhost:8000/deleteTask/", {id: id}).then((res) => {
-      console.log(res.data.message);
-      setAllItem(allItems.filter((element) => element._id != id));
-    });
+    axios
+      .post(`${process.env.REACT_APP_BACKEND_URL}/deleteTask/`, { id: id })
+      .then((res) => {
+        console.log(res.data.message);
+        setAllItem(allItems.filter((element) => element._id != id));
+      });
   };
 
   const editItem = (id, data, index) => {
@@ -74,14 +76,14 @@ function ToDoList() {
     });
 
     const fieldsAsObject = fieldsAsArray.reduce(
-      (a, key) => ({...a, [key]: data[key]}),
+      (a, key) => ({ ...a, [key]: data[key] }),
       {}
     );
 
     console.log(fieldsAsObject);
 
     axios
-      .post("http://localhost:8000/editTask/", {
+      .post(`${process.env.REACT_APP_BACKEND_URL}/editTask/`, {
         id: id,
         updateFields: fieldsAsObject,
       })
@@ -91,7 +93,7 @@ function ToDoList() {
         setAllItem(
           allItems.map((item, i) => {
             if (index == i) {
-              return {...item, ...{...fieldsAsObject, editItem: false}};
+              return { ...item, ...{ ...fieldsAsObject, editItem: false } };
             }
             return item;
           })
@@ -139,8 +141,8 @@ function ToDoList() {
                   reset();
                   setAllItem(
                     allItems.map((item, i) => {
-                      if (index === i) return {...item, editItem: true};
-                      else if (index !== i) return {...item, editItem: false};
+                      if (index === i) return { ...item, editItem: true };
+                      else if (index !== i) return { ...item, editItem: false };
                     })
                   );
                 }}
