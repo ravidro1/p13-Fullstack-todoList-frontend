@@ -2,7 +2,8 @@ import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import background_Imgae from "./assets/pexels-roberto-vivancos-2190283.jpg";
+import { useLottie } from "lottie-react";
+import listGif from "./assets/56438-man-with-task-list.json";
 
 function Login(props) {
   const { register, reset, handleSubmit } = useForm();
@@ -20,50 +21,60 @@ function Login(props) {
       });
   };
 
+  const options = {
+    animationData: listGif,
+    loop: true,
+  };
+
+  const { View } = useLottie(options);
+
   return (
     <div
-      className={`relative w-[100%] h-[100%] flex flex-col justify-center items-center  bg-gradient-to-t from-[#2a2551] to-[#ffffff0e]
-      
-        bg-no-repeat bg-cover`}
+      className={`w-[100%] h-[100%] flex flex-col justify-center items-center bg-[#eeeeee]`}
     >
-      <img
-        className="w-[100%] h-[100%] absolute -z-20 blur-sm"
-        src={background_Imgae}
-        alt=""
-      />
-
-      <h1 className="font-extralight text-9xl text-[#9E4784] "> login </h1>
-
-      <section className="w-[15%]">
-        <form
-          className="flex flex-col lg:py-44 md:py-28 py-16"
-          onSubmit={handleSubmit(login)}
-        >
-          <input
-            className="px-3 py-3 border-b border-[#9E4784] bg-transparent mb-5 outline-none text-white placeholder:text-[#fff]"
-            {...register("username", { required: true })}
-            type={"text"}
-            placeholder="username"
-          />
-          <input
-            className="px-3 py-3 border-b border-[#9E4784] bg-transparent mb-7 outline-none text-white placeholder:text-[#fff]"
-            {...register("password", { required: true })}
-            type={"password"}
-            placeholder="password"
-          />
-          <button className="p-3 bg-[#9E4784] outline-none text-white rounded-lg  mb-7">
+      <div className="w-[70%] h-[70%] flex rounded-3xl overflow-hidden shadow-2xl shadow-black">
+        <section className="w-[50%] h-[100%] bg-[#222831] flex flex-col justify-center items-center">
+          <h1 className="w-[100%] h-[35%] font-extralight text-9xl text-[#D65A31] flex justify-center items-center">
             {" "}
-            login{" "}
-          </button>
-          <button
-            className="text-[#9E4784] text-xl hover:underline"
-            onClick={() => navigate("/SignUp")}
-          >
-            {" "}
-            Create New User{" "}
-          </button>
-        </form>
-      </section>
+            Login{" "}
+          </h1>
+
+          <div className="w-[100%] h-[65%] flex justify-center items-center">
+            <form
+              className="flex flex-col w-[50%] h-[65%]"
+              onSubmit={handleSubmit(login)}
+            >
+              <input
+                className="px-3 py-3 border-b border-[#D65A31] bg-transparent mb-5 outline-none text-white placeholder:text-[rgba(255,255,255,0.7)]"
+                {...register("username", { required: true })}
+                type={"text"}
+                placeholder="username"
+              />
+              <input
+                className="px-3 py-3 border-b border-[#D65A31] bg-transparent mb-7 outline-none text-white placeholder:text-[rgba(255,255,255,0.7)]"
+                {...register("password", { required: true })}
+                type={"password"}
+                placeholder="password"
+              />
+              <button className="p-3 bg-[#D65A31] outline-none text-white rounded-lg mb-7">
+                {" "}
+                Login{" "}
+              </button>
+              <button
+                className="text-[#D65A31] text-xl hover:underline"
+                onClick={() => navigate("/SignUp")}
+              >
+                Create New User
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <section className="w-[50%] h-[100%] bg-[#ffffff] flex flex-col justify-center items-center">
+          {" "}
+          <div className="w-[80%] h-[80%] "> {View} </div>
+        </section>
+      </div>
     </div>
   );
 }
