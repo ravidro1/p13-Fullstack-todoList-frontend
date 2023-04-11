@@ -2,13 +2,14 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
+import TodoItem from "./components/TodoItem";
 
 function ToDoList() {
   const { register, reset, handleSubmit } = useForm();
 
   const param = useParams();
 
-  const [allItems, setAllItem] = useState([]);
+  const [allItems, setAllItem] = useState([{ title: "1", content: "1" }]);
   const [currentUser, setCurrentUser] = useState("");
 
   useEffect(() => {
@@ -58,104 +59,46 @@ function ToDoList() {
     reset();
   };
 
-  const deleteItem = (id) => {
-    axios
-      .post(`${process.env.REACT_APP_BACKEND_URL}/deleteTask/`, { id: id })
-      .then((res) => {
-        console.log(res.data.message);
-        setAllItem(allItems.filter((element) => element._id != id));
-      });
-  };
-
-  const editItem = (id, data, index) => {
-    const fieldsAsArray = [];
-
-    Object.keys(data).map((key) => {
-      if (data[key] != "") fieldsAsArray.push(key);
-      // return key
-    });
-
-    const fieldsAsObject = fieldsAsArray.reduce(
-      (a, key) => ({ ...a, [key]: data[key] }),
-      {}
-    );
-
-    console.log(fieldsAsObject);
-
-    axios
-      .post(`${process.env.REACT_APP_BACKEND_URL}/editTask/`, {
-        id: id,
-        updateFields: fieldsAsObject,
-      })
-      .then((res) => {
-        // console.log(res.data.message);
-        console.log(res.data.data);
-        setAllItem(
-          allItems.map((item, i) => {
-            if (index == i) {
-              return { ...item, ...{ ...fieldsAsObject, editItem: false } };
-            }
-            return item;
-          })
-        );
-      });
-    reset();
-  };
-
   return (
-    <div className="App">
-      {console.log(currentUser)}
-      {/* {console.log(allItems)} */}
-      <form onSubmit={handleSubmit(addItem)}>
-        <input placeholder="title" {...register("title")} />
-        <input placeholder="content" {...register("content")} />
-        <button type="submit"> add </button>
-      </form>
+    <div className="w-[100%] h-[100%] flex justify-center items-center">
+      <section className="2xl:w-[40%] lg:w-[50%] lg:h-[90%] h-[100%] bg-[#222831] shadow-2xl shadow-black lg:rounded-xl flex flex-col justify-between items-center">
+        <form
+          className="w-[90%] h-[15%] flex justify-around items-center border-[#D65A31]"
+          onSubmit={handleSubmit(addItem)}
+        >
+          <textarea
+            className="bg-transparent text-white outline-none resize-none border-[#D65A31] border-b w-[25%] h-[50%] px-2 py-1"
+            placeholder="title"
+            {...register("title")}
+          />
+          <textarea
+            className="bg-transparent text-white outline-none resize-none border-[#D65A31] border-b w-[50%] h-[50%] px-2 py-1"
+            placeholder="content"
+            {...register("content")}
+          />
+          <button
+            className="w-[15%] h-[50%] rounded-lg bg-[#D65A31] text-white"
+            type="submit"
+          >
+            {" "}
+            add{" "}
+          </button>
+        </form>
 
-      {allItems?.map((item, index) => {
-        return (
-          <div key={index}>
-            <br />
-            {item.title} : {item.content}
-            {item.editItem && (
-              <form
-                onSubmit={handleSubmit((data) =>
-                  editItem(
-                    item._id,
-                    {
-                      title: data.newTitle,
-                      content: data.newContent,
-                    },
-                    index
-                  )
-                )}
-              >
-                <input placeholder="new title" {...register("newTitle")} />
-                <input placeholder="new content" {...register("newContent")} />
-                <button type="submit"> edit </button>
-              </form>
-            )}
-            {!item.editItem && (
-              <button
-                onClick={() => {
-                  reset();
-                  setAllItem(
-                    allItems.map((item, i) => {
-                      if (index === i) return { ...item, editItem: true };
-                      else if (index !== i) return { ...item, editItem: false };
-                    })
-                  );
-                }}
-                type="submit"
-              >
-                {" "}
-                edit{" "}
-              </button>
-            )}
-            <button onClick={() => deleteItem(item._id)}> delete </button>
-          </div>
-        );
-      })}
+        <div className="w-[80%] h-[80%] overflow-y-auto border-t">
+          {allItems?.map((item, index) => {
+            return (
+              <TodoItem
+                key={index}
+                item={item}
+                allItems={allItems}
+                index={index}
+                setAllItem={setAllItem}
+              />
+            );
+          })}
+        </div>
+      </section>
     </div>
   );
 }
