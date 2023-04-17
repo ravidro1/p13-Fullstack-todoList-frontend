@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
 
 export default function TodoItem({ item, index, allItems, setAllItem }) {
   const [tempNewTitle, setTempNewTitle] = useState("");
@@ -14,41 +13,6 @@ export default function TodoItem({ item, index, allItems, setAllItem }) {
         setAllItem(allItems.filter((element) => element._id != id));
       });
   };
-
-  //   const editItem = (id, data, index) => {
-  //     const fieldsAsArray = [];
-
-  //     Object.keys(data).map((key) => {
-  //       if (data[key] != "") fieldsAsArray.push(key);
-  //       // return key
-  //     });
-
-  //     const fieldsAsObject = fieldsAsArray.reduce(
-  //       (a, key) => ({ ...a, [key]: data[key] }),
-  //       {}
-  //     );
-
-  //     console.log(fieldsAsObject);
-
-  //     axios
-  //       .post(`${process.env.REACT_APP_BACKEND_URL}/editTask/`, {
-  //         id: id,
-  //         updateFields: fieldsAsObject,
-  //       })
-  //       .then((res) => {
-  //         // console.log(res.data.message);
-  //         console.log(res.data.data);
-  //         setAllItem(
-  //           allItems.map((item, i) => {
-  //             if (index == i) {
-  //               return { ...item, ...{ ...fieldsAsObject, editItem: false } };
-  //             }
-  //             return item;
-  //           })
-  //         );
-  //       });
-  //     reset();
-  //   };
 
   const editItem = () => {
     if (!item.editItem) {

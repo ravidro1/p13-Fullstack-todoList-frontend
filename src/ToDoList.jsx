@@ -1,15 +1,17 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import TodoItem from "./components/TodoItem";
 
 function ToDoList() {
+  const navigate = useNavigate();
+
   const { register, reset, handleSubmit } = useForm();
 
   const param = useParams();
 
-  const [allItems, setAllItem] = useState([{ title: "1", content: "1" }]);
+  const [allItems, setAllItem] = useState([]);
   const [currentUser, setCurrentUser] = useState("");
 
   useEffect(() => {
@@ -60,7 +62,14 @@ function ToDoList() {
   };
 
   return (
-    <div className="w-[100%] h-[100%] flex justify-center items-center">
+    <div className="w-[100%] h-[100%] flex flex-col justify-center items-center">
+      <button
+        className="w-[5%] h-[5%] bg-[#222831] self-start mx-10  text-white rounded-xl hover:font-semibold"
+        onClick={() => navigate("/")}
+      >
+        {" "}
+        {"Logout"}{" "}
+      </button>
       <section className="2xl:w-[40%] lg:w-[50%] lg:h-[90%] h-[100%] bg-[#222831] shadow-2xl shadow-black lg:rounded-xl flex flex-col justify-between items-center">
         <form
           className="w-[90%] h-[15%] flex justify-around items-center border-[#D65A31]"
