@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 
-export default function TodoItem({ item, index, allItems, setAllItem }) {
+export default function TodoItem({ item, index, setAllItem }) {
   const [tempNewTitle, setTempNewTitle] = useState("");
   const [tempNewContent, setTempNewContent] = useState("");
 
@@ -10,18 +10,21 @@ export default function TodoItem({ item, index, allItems, setAllItem }) {
       .post(`${process.env.REACT_APP_BACKEND_URL}/deleteTask/`, { id })
       .then((res) => {
         console.log(res.data.message);
-        setAllItem(allItems.filter((element) => element._id != id));
+        setAllItem((prev) => [...prev.filter((element) => element._id != id)]);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
   const editItem = () => {
     if (!item.editItem) {
-      setAllItem(
-        allItems.map((item, i) => {
+      setAllItem((prev) => [
+        ...prev.map((item, i) => {
           if (index === i) return { ...item, editItem: true };
           else if (index !== i) return { ...item, editItem: false };
-        })
-      );
+        }),
+      ]);
 
       setTempNewTitle(item.title);
       setTempNewContent(item.content);
@@ -34,8 +37,8 @@ export default function TodoItem({ item, index, allItems, setAllItem }) {
         .then((res) => {
           // console.log(res.data.message);
           console.log(res.data.data);
-          setAllItem(
-            allItems.map((item, i) => {
+          setAllItem((prev) => [
+            ...prev.map((item, i) => {
               if (index == i) {
                 return {
                   ...item,
@@ -48,8 +51,8 @@ export default function TodoItem({ item, index, allItems, setAllItem }) {
                 };
               }
               return item;
-            })
-          );
+            }),
+          ]);
         });
     }
   };
@@ -59,11 +62,17 @@ export default function TodoItem({ item, index, allItems, setAllItem }) {
       <section className="w-[60%] h-[100%] flex flex-col">
         {!item.editItem ? (
           <>
-            <h1 className="min-h-[45px] text-2xl mx-2 pt-1 pb-2 border-b border-[#D65A31]">
+            <h1
+              role="titleHeader"
+              className="min-h-[45px] text-2xl mx-2 pt-1 pb-2 border-b border-[#D65A31]"
+            >
               {" "}
               {item.title}{" "}
             </h1>
-            <p className="min-h-[65%] text-lg px-2 py-1 overflow-y-auto break-all">
+            <p
+              role="contentParagraph"
+              className="min-h-[65%] text-lg px-2 py-1 overflow-y-auto break-all"
+            >
               {" "}
               {item.content}
             </p>
@@ -71,12 +80,14 @@ export default function TodoItem({ item, index, allItems, setAllItem }) {
         ) : (
           <>
             <input
+              role="titleInput"
               value={tempNewTitle}
               onChange={(e) => setTempNewTitle(e.target.value)}
               className="min-h-[45px] text-2xl mx-2 pt-1 pb-2 border-b border-[#D65A31] bg-transparent outline-none text-green-400"
               placeholder="new title"
             />
             <textarea
+              role="contentInput"
               value={tempNewContent}
               onChange={(e) => setTempNewContent(e.target.value)}
               className="min-h-[65%] text-lg px-2 py-1 overflow-y-auto break-all bg-transparent outline-none resize-none text-green-400"
@@ -90,10 +101,10 @@ export default function TodoItem({ item, index, allItems, setAllItem }) {
         <button
           className=" w-[40%] h-[45%] bg-[#D65A31] rounded-xl"
           onClick={editItem}
-          type="submit"
+          role="editButton"
         >
-          {" "}
-          {item.editItem ? "Confirm Edit" : "Edit"}{" "}
+          
+          {item.editItem ? "Confirm Edit" : "Edit"}
         </button>
 
         <button

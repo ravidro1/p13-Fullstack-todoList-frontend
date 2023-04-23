@@ -1,15 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import TodoItem from "./components/TodoItem";
+import TodoItem from "../components/TodoItem";
 
 function ToDoList() {
   const navigate = useNavigate();
-
-  const { register, reset, handleSubmit } = useForm();
-
   const param = useParams();
+
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
   const [allItems, setAllItem] = useState([]);
   const [currentUser, setCurrentUser] = useState("");
@@ -21,7 +20,7 @@ function ToDoList() {
           username: param?.username,
         })
         .then((res) => {
-          console.log(res.data);
+          console.warn(res.data);
           setCurrentUser(res.data.data);
           getUserTaskList(res.data.data);
         })
@@ -45,10 +44,11 @@ function ToDoList() {
       });
   };
 
-  const addItem = (data) => {
+  const addItem = () => {
     axios
       .post(`${process.env.REACT_APP_BACKEND_URL}/addTask/`, {
-        ...data,
+        title,
+        content,
         creatorRef: currentUser,
       })
       .then((res) => {
@@ -58,7 +58,6 @@ function ToDoList() {
       .catch((err) => {
         console.log(err);
       });
-    reset();
   };
 
   return (
@@ -67,30 +66,33 @@ function ToDoList() {
         className="w-[5%] h-[5%] bg-[#222831] self-start mx-10  text-white rounded-xl hover:font-semibold"
         onClick={() => navigate("/")}
       >
-        {" "}
-        {"Logout"}{" "}
+        Logout
       </button>
       <section className="2xl:w-[40%] lg:w-[50%] lg:h-[90%] h-[100%] bg-[#222831] shadow-2xl shadow-black lg:rounded-xl flex flex-col justify-between items-center">
         <form
           className="w-[90%] h-[15%] flex justify-around items-center border-[#D65A31]"
-          onSubmit={handleSubmit(addItem)}
+          onSubmit={(e) => e.preventDefault()}
         >
           <textarea
+            role="titleInput"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             className="bg-transparent text-white outline-none resize-none border-[#D65A31] border-b w-[25%] h-[50%] px-2 py-1"
             placeholder="title"
-            {...register("title")}
           />
           <textarea
+            role="contentInput"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
             className="bg-transparent text-white outline-none resize-none border-[#D65A31] border-b w-[50%] h-[50%] px-2 py-1"
             placeholder="content"
-            {...register("content")}
           />
           <button
+            role="addItemButton_toDoList"
+            onClick={addItem}
             className="w-[15%] h-[50%] rounded-lg bg-[#D65A31] text-white"
-            type="submit"
           >
-            {" "}
-            add{" "}
+            add
           </button>
         </form>
 
@@ -100,7 +102,6 @@ function ToDoList() {
               <TodoItem
                 key={index}
                 item={item}
-                allItems={allItems}
                 index={index}
                 setAllItem={setAllItem}
               />
