@@ -59,7 +59,7 @@ export default function TodoItem({ item, index, setAllItem }) {
 
   return (
     <div className="w-[100%] h-[20%] text-white border-b flex ">
-      <section className="w-[60%] h-[100%] flex flex-col">
+      <section className="w-[60%] h-[100%] flex flex-col overflow-hidden">
         {!item.editItem ? (
           <>
             <h1
@@ -103,7 +103,6 @@ export default function TodoItem({ item, index, setAllItem }) {
           onClick={editItem}
           role="editButton"
         >
-          
           {item.editItem ? "Confirm Edit" : "Edit"}
         </button>
 

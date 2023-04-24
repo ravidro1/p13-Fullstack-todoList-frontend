@@ -53,7 +53,9 @@ function ToDoList() {
       })
       .then((res) => {
         console.log(res.data);
-        setAllItem([...allItems, { ...res.data.data, editItem: false }]);
+        setTitle("");
+        setContent("");
+        setAllItem([{ ...res.data.data, editItem: false }, ...allItems]);
       })
       .catch((err) => {
         console.log(err);
