@@ -111,7 +111,7 @@ function ToDoList() {
 
         <div className="lg:hidden block w-[100%] h-[15%]">
           <button
-            className="w-[20%] h-[80%] bg-[#ffffff] self-start text-[#D65A31] rounded-xl"
+            className="w-[25%] h-[60%] mx-10 bg-[#ffffff] self-start text-[#D65A31] rounded-xl"
             onClick={() => navigate("/")}
           >
             Logout
