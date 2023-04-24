@@ -41,11 +41,11 @@ function Login({}) {
     <div
       className={`w-[100%] h-[100%] flex flex-col justify-center items-center bg-[#eeeeee]`}
     >
-      <div className="2xl:w-[70%] 2xl:h-[70%] lg:w-[80%] lg:h-[85%] w-[100%] h-[100%] flex lg:rounded-3xl overflow-hidden shadow-2xl shadow-black">
+      <div className="2xl:w-[70%] 2xl:h-[75%] lg:w-[80%] lg:h-[85%] w-[100%] h-[100%] flex lg:rounded-3xl overflow-hidden shadow-2xl shadow-black">
         <section className="lg:w-[50%] w-[100%] h-[100%] bg-[#222831] flex flex-col justify-center items-center">
           <h1
             role="heading_login"
-            className="w-[100%] h-[35%] font-extralight 2xl:text-9xl lg:text-8xl text-7xl text-[#D65A31] flex justify-center items-center"
+            className="w-[100%] h-[35%] font-extralight 2xl:text-[20vh] lg:text-[17.5vh] text-8xl text-[#D65A31] flex justify-center items-center"
           >
             {" "}
             Login{" "}

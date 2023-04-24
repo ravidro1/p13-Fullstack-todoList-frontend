@@ -63,12 +63,12 @@ function ToDoList() {
   return (
     <div className="w-[100%] h-[100%] flex flex-col justify-center items-center">
       <button
-        className="w-[5%] h-[5%] bg-[#222831] self-start mx-10  text-white rounded-xl hover:font-semibold"
+        className="lg:block hidden p-4 bg-[#222831] self-start mx-10  text-white rounded-xl hover:bg-[#2228317d]"
         onClick={() => navigate("/")}
       >
         Logout
       </button>
-      <section className="2xl:w-[40%] lg:w-[50%] lg:h-[90%] h-[100%] bg-[#222831] shadow-2xl shadow-black lg:rounded-xl flex flex-col justify-between items-center">
+      <section className="2xl:w-[40%] lg:w-[50%] lg:h-[90%] w-[100%] h-[100%] bg-[#222831] shadow-2xl shadow-black lg:rounded-xl flex flex-col justify-between items-center">
         <form
           className="w-[90%] h-[15%] flex justify-around items-center border-[#D65A31]"
           onSubmit={(e) => e.preventDefault()}
@@ -108,6 +108,13 @@ function ToDoList() {
             );
           })}
         </div>
+
+        <button
+          className="lg:hidden block p-4 bg-[#aa1f1f] self-start text-white rounded-xl hover:bg-[#c04e4e7d] absolute bottom-5 left-5"
+          onClick={() => navigate("/")}
+        >
+          Logout
+        </button>
       </section>
     </div>
   );
