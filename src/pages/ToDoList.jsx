@@ -96,7 +96,7 @@ function ToDoList() {
           </button>
         </form>
 
-        <div className="w-[80%] h-[80%] overflow-y-auto border-t">
+        <div className="w-[80%] lg:h-[80%] h-[70%] overflow-y-auto border-t">
           {allItems?.map((item, index) => {
             return (
               <TodoItem
@@ -109,12 +109,14 @@ function ToDoList() {
           })}
         </div>
 
-        <button
-          className="lg:hidden block p-4 bg-[#aa1f1f] self-start text-white rounded-xl hover:bg-[#c04e4e7d] absolute bottom-5 left-5"
-          onClick={() => navigate("/")}
-        >
-          Logout
-        </button>
+        <div className="lg:hidden block w-[100%] h-[15%]">
+          <button
+            className="w-[20%] h-[80%] bg-[#ffffff] self-start text-[#D65A31] rounded-xl"
+            onClick={() => navigate("/")}
+          >
+            Logout
+          </button>
+        </div>
       </section>
     </div>
   );
