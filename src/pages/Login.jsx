@@ -1,10 +1,13 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLottie } from "lottie-react";
 import listGif from "../assets/56438-man-with-task-list.json";
+import { context } from "../App";
 
 function Login({}) {
+  const { loginAuthCheck } = useContext(context);
+
   const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
@@ -28,7 +31,8 @@ function Login({}) {
         password,
       })
       .then((res) => {
-        console.warn(res.data);
+        localStorage.setItem("token", JSON.stringify(res.data.token));
+        // loginAuthCheck().then(() => navigate(`/List/${username}`));
         navigate(`/List/${username}`);
       })
       .catch((error) => {

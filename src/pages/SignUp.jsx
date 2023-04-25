@@ -34,8 +34,6 @@ function SignUp() {
 
   const { View } = useLottie(options);
 
-  // bg-[#222831]
-
   return (
     <div
       className={`w-[100%] h-[100%] flex flex-col justify-center items-center bg-[#eeeeee]`}
@@ -44,7 +42,7 @@ function SignUp() {
         <section className="lg:w-[50%] w-[100%] h-[100%] bg-[#222831] flex flex-col justify-center items-center">
           <h1
             role="heading_signUp"
-            className="w-[100%] h-[35%] font-extralight 2xl:text-[20vh] lg:text-[17.5vh] text-8xl text-[#D65A31] flex justify-center items-center"
+            className="w-[100%] h-[35%] font-extralight 2xl:text-[15vh] lg:text-[12vh] text-8xl text-[#D65A31] flex justify-center items-center"
           >
             {" "}
             Register{" "}

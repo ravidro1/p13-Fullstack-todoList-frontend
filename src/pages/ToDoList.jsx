@@ -1,10 +1,12 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import TodoItem from "../components/TodoItem";
+import { context } from "../App";
 
 function ToDoList() {
-  const navigate = useNavigate();
+  const { logout } = useContext(context);
+
   const param = useParams();
 
   const [title, setTitle] = useState("");
@@ -16,11 +18,19 @@ function ToDoList() {
   useEffect(() => {
     if (!currentUser) {
       axios
-        .post(`${process.env.REACT_APP_BACKEND_URL}/getUserByUsername`, {
-          username: param?.username,
-        })
+        .post(
+          `${process.env.REACT_APP_BACKEND_URL}/getUserByUsername`,
+          {
+            username: param?.username,
+          },
+          {
+            headers: {
+              "x-access-token": JSON.parse(localStorage.getItem("token")),
+            },
+          }
+        )
         .then((res) => {
-          console.warn(res.data);
+          // console.warn(res.data);
           setCurrentUser(res.data.data);
           getUserTaskList(res.data.data);
         })
@@ -32,11 +42,19 @@ function ToDoList() {
 
   const getUserTaskList = (user) => {
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URL}/getAllForUser`, {
-        creatorRef: user._id,
-      })
+      .post(
+        `${process.env.REACT_APP_BACKEND_URL}/getAllForUser`,
+        {
+          creatorRef: user._id,
+        },
+        {
+          headers: {
+            "x-access-token": JSON.parse(localStorage.getItem("token")),
+          },
+        }
+      )
       .then((res) => {
-        console.log(res.data.data);
+        // console.log(res.data.data);
         setAllItem(res.data.data);
       })
       .catch((err) => {
@@ -46,11 +64,19 @@ function ToDoList() {
 
   const addItem = () => {
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URL}/addTask/`, {
-        title,
-        content,
-        creatorRef: currentUser,
-      })
+      .post(
+        `${process.env.REACT_APP_BACKEND_URL}/addTask/`,
+        {
+          title,
+          content,
+          creatorRef: currentUser,
+        },
+        {
+          headers: {
+            "x-access-token": JSON.parse(localStorage.getItem("token")),
+          },
+        }
+      )
       .then((res) => {
         console.log(res.data);
         setTitle("");
@@ -66,7 +92,7 @@ function ToDoList() {
     <div className="w-[100%] h-[100%] flex flex-col justify-center items-center">
       <button
         className="lg:block hidden p-4 bg-[#222831] self-start mx-10  text-white rounded-xl hover:bg-[#2228317d]"
-        onClick={() => navigate("/")}
+        onClick={logout}
       >
         Logout
       </button>
@@ -114,7 +140,7 @@ function ToDoList() {
         <div className="lg:hidden w-[100%] h-[15%] flex items-center">
           <button
             className="w-[25%] h-[55%] mx-16 bg-[#ffffff] text-[#D65A31] rounded-xl"
-            onClick={() => navigate("/")}
+            onClick={logout}
           >
             Logout
           </button>

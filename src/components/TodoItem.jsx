@@ -7,7 +7,15 @@ export default function TodoItem({ item, index, setAllItem }) {
 
   const deleteItem = (id) => {
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URL}/deleteTask/`, { id })
+      .post(
+        `${process.env.REACT_APP_BACKEND_URL}/deleteTask/`,
+        { id },
+        {
+          headers: {
+            "x-access-token": JSON.parse(localStorage.getItem("token")),
+          },
+        }
+      )
       .then((res) => {
         console.log(res.data.message);
         setAllItem((prev) => [...prev.filter((element) => element._id != id)]);
@@ -30,10 +38,18 @@ export default function TodoItem({ item, index, setAllItem }) {
       setTempNewContent(item.content);
     } else {
       axios
-        .post(`${process.env.REACT_APP_BACKEND_URL}/editTask/`, {
-          id: item._id,
-          updateFields: { title: tempNewTitle, content: tempNewContent },
-        })
+        .post(
+          `${process.env.REACT_APP_BACKEND_URL}/editTask/`,
+          {
+            id: item._id,
+            updateFields: { title: tempNewTitle, content: tempNewContent },
+          },
+          {
+            headers: {
+              "x-access-token": JSON.parse(localStorage.getItem("token")),
+            },
+          }
+        )
         .then((res) => {
           // console.log(res.data.message);
           console.log(res.data.data);
