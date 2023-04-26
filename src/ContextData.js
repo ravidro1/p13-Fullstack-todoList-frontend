@@ -7,14 +7,12 @@ export default function ContextData() {
   const [resetListener, setResetListener] = useState(0);
   const navigate = useNavigate();
 
-  // console.log(isAuthRef);
-
   async function checkUserData() {
     if (resetListener > 0) await loginAuthCheck();
   }
 
   useEffect(() => {
-    // setInterval(checkUserData, 1000 * 60 * 1);
+    setInterval(checkUserData, 1000 * 60 * 1);
     window.addEventListener("storage", checkUserData);
     return () => window.removeEventListener("storage", checkUserData);
   }, [resetListener]);

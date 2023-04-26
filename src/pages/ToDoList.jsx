@@ -7,6 +7,8 @@ import { context } from "../App";
 function ToDoList() {
   const { logout } = useContext(context);
 
+  const navigate = useNavigate();
+
   const param = useParams();
 
   const [title, setTitle] = useState("");
@@ -18,41 +20,45 @@ function ToDoList() {
   useEffect(() => {
     if (!currentUser) {
       axios
-        .post(
-          `${process.env.REACT_APP_BACKEND_URL}/getUserByUsername`,
-          {
-            username: param?.username,
+        .get(`${process.env.REACT_APP_BACKEND_URL}/getUserById`, {
+          headers: {
+            "x-access-token": JSON.parse(localStorage.getItem("token")),
           },
-          {
-            headers: {
-              "x-access-token": JSON.parse(localStorage.getItem("token")),
-            },
-          }
-        )
+        })
         .then((res) => {
           // console.warn(res.data);
           setCurrentUser(res.data.data);
-          getUserTaskList(res.data.data);
+          getUserTaskList();
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  }, [param]);
+  }, []);
 
-  const getUserTaskList = (user) => {
+  useEffect(() => {
     axios
-      .post(
-        `${process.env.REACT_APP_BACKEND_URL}/getAllForUser`,
-        {
-          creatorRef: user._id,
+      .get(`${process.env.REACT_APP_BACKEND_URL}/getUsername`, {
+        headers: {
+          "x-access-token": JSON.parse(localStorage.getItem("token")),
         },
-        {
-          headers: {
-            "x-access-token": JSON.parse(localStorage.getItem("token")),
-          },
-        }
-      )
+      })
+      .then((res) => {
+        console.log(res.data.username);
+        navigate(`/List/${res.data.username}`);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const getUserTaskList = () => {
+    axios
+      .get(`${process.env.REACT_APP_BACKEND_URL}/getAllForUser`, {
+        headers: {
+          "x-access-token": JSON.parse(localStorage.getItem("token")),
+        },
+      })
       .then((res) => {
         // console.log(res.data.data);
         setAllItem(res.data.data);

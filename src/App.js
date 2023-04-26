@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import SignUp from "./pages/SignUp";
@@ -21,6 +21,7 @@ function App() {
             <Route path="/List/:username" element={<ToDoList />} />
           </Route>
           <Route path="/SignUp" element={<SignUp />} />
+          <Route path="*" element={<Navigate to={"/"} />} />
         </Routes>
       </div>
     </context.Provider>
